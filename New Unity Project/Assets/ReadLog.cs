@@ -181,11 +181,11 @@ public class ReadLog
                             
                             if (newCard.player == 1)
                             {
-                                NewObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-400 + newCard.zPosition * 50, -80);
+                                NewObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-400 + newCard.zPosition * 50, 0);
                             }
                             else
                             {
-                                NewObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-400 + newCard.zPosition * 50, 80);
+                                NewObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-400 + newCard.zPosition * 50, -100);
                             }
                             //new GameObject().AddComponent<MonoStub>().StartCoroutine(Load(newCard.cardGameID, NewImage));
                             NewObj.SetActive(true);
@@ -393,13 +393,14 @@ public class ReadLog
 
                     if (currCard.player == 1)
                     {
-                        NewObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-400 + value * 50, -80);
-                        instancedObj.GetComponent<Transform>().position = new Vector3( value * 20, 40,-50);
+                        NewObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-400 + value * 50, 0);
+                        instancedObj.GetComponent<Transform>().position = new Vector3( 100+value * 20, 40,-50);
                     }
                     else
                     {
-                        NewObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-400 + value * 50, 80);
-                        instancedObj.GetComponent<Transform>().position = new Vector3(value * 20,   20,40);
+                        NewObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-400 + value * 50, -100);
+                        instancedObj.GetComponent<Transform>().position = new Vector3(100+value * 20,   20,40);
+                        instancedObj.GetComponent<Transform>().Rotate(Vector3.right*180);
 
                     }
                     //new GameObject().AddComponent<MonoStub>().StartCoroutine(Load(currCard.cardGameID, NewImage));
@@ -424,11 +425,12 @@ public class ReadLog
                     {
                         if (currCard.player == 1)
                         {
-                            GameObject.Find(currCard.cardGameID.ToString()).GetComponent<RectTransform>().anchoredPosition = new Vector2(-400 + value * 50, -80);
+                            GameObject.Find(currCard.cardGameID.ToString()).GetComponent<RectTransform>().anchoredPosition = new Vector2(-400 + value * 50, 0);
                         }
                         else
                         {
-                            GameObject.Find(currCard.cardGameID.ToString()).GetComponent<RectTransform>().anchoredPosition = new Vector2(-400 + value * 50, 80);
+                            GameObject.Find(currCard.cardGameID.ToString()).GetComponent<RectTransform>().anchoredPosition = new Vector2(-400 + value * 50, -100);
+                            
                         }
                     }
                 }
