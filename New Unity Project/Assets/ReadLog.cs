@@ -182,6 +182,8 @@ public class ReadLog
                             if (newCard.player == 1)
                             {
                                 NewObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-400 + newCard.zPosition * 50,-400);
+                               
+
                             }
                             else
                             {
@@ -381,7 +383,7 @@ public class ReadLog
                     m[1] = myNewMaterial;
                     m[0] = (Material)obj2;
                     instancedObj.GetComponent<Renderer>().materials = m;
-                    instancedObj.name = currCard.cardGameID.ToString();
+                    instancedObj.name = "c"+currCard.cardGameID.ToString();
 
                     if (currCard.cardID!=null&&imageMap[currCard.cardID]!=null)
                     {
@@ -394,7 +396,7 @@ public class ReadLog
                     if (currCard.player == 1)
                     {
                         NewObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-500 + value * 50, -400);
-                        instancedObj.GetComponent<Transform>().position = new Vector3( 100+value * 20, 40,-50);
+                        instancedObj.GetComponent<Transform>().position = new Vector3( 100+value * 20, 20,-50);
                     }
                     else
                     {
@@ -420,17 +422,21 @@ public class ReadLog
                     if (value == 0)
                     {
                         GameObject.Find(currCard.cardGameID.ToString()).GetComponent<RectTransform>().anchoredPosition = new Vector2(500, 20);
+                        GameObject.Find("c" + currCard.cardGameID.ToString()).GetComponent<Transform>().position = new Vector3(500, 20, -50);
                     }
                     else
                     {
                         if (currCard.player == 1)
                         {
+                            GameObject.Find("c"+currCard.cardGameID.ToString()).GetComponent<Transform>().position = new Vector3(100 + value * 20, 20, -50);
                             GameObject.Find(currCard.cardGameID.ToString()).GetComponent<RectTransform>().anchoredPosition = new Vector2(-500 + value * 50, -400);
                         }
                         else
                         {
-                            GameObject.Find(currCard.cardGameID.ToString()).GetComponent<RectTransform>().anchoredPosition = new Vector2(-500 + value * 50, -500);
-                            
+                            GameObject.Find("c"+currCard.cardGameID.ToString()).GetComponent<Transform>().position = new Vector3(100 + value * 20, 20, 40);
+                            GameObject.Find( currCard.cardGameID.ToString()).GetComponent<RectTransform>().anchoredPosition = new Vector2(-500 + value * 50, -500);
+
+
                         }
                     }
                 }
