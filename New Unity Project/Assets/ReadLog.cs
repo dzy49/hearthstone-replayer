@@ -33,7 +33,7 @@ public class ReadLog
     {
 
         string newstring =null;
-        strs = File.ReadAllLines(@"C:\Users\rongday\Desktop\Power.log");
+        strs = File.ReadAllLines(@"C:\Users\rongday\Downloads\Power.log.txt");
         int i, j = 0, length = strs.Length;
         count = 0;
         card a = new card();
@@ -306,11 +306,15 @@ public class ReadLog
             int i = 0;
             card currCard = null;
 
-            i = line.IndexOf("Entity=");
-            newstring = line.Substring(i + 7);
-            i = newstring.IndexOf(" ");
-            id = newstring.Substring(0, i);
+            //i = line.IndexOf("Entity=");
+            //newstring = line.Substring(i + 7);
+            //i = newstring.IndexOf(" ");
+            //id = newstring.Substring(0, i);
             //idnum = Int32.Parse(id);
+            Regex reg = new Regex("Entity=(.+)tag=(.+)value=(.+)");
+            Match match = reg.Match(line);
+            id = match.Groups[1].Value.TrimEnd();
+
             if (Int32.TryParse(id, out idnum))
             {
                 currCard = entity[idnum];
@@ -330,10 +334,19 @@ public class ReadLog
                     currCard = entity[3];
                 }else
                 {
-                    Regex reg = new Regex(@"(?<=id=)[0-9\.]*");
-                    Match match = reg.Match(strs[j]);
-                    string id2 = match.Groups[0].Value;
-                    int idnum2 = Int32.Parse(id2);
+                    int result, idnum2;
+                    Regex reg2 = new Regex(@"(?<=id=)[0-9\.]*");
+                    Match match2 = reg2.Match(strs[j]);
+                    string id2 = match2.Groups[0].Value;
+                    
+                    if (Int32.TryParse(id2, out result))
+                    {
+                        idnum2 = result;
+                    }
+                    else
+                    {
+                        idnum2 = -1;
+                    }
                     currCard = entity[idnum2];
                 }
 
@@ -341,16 +354,17 @@ public class ReadLog
 
 
 
-            i = line.IndexOf("tag=");
-            newstring = line.Substring(i + 4);
-            i = newstring.IndexOf(" ");
-            id = newstring.Substring(0, i);
-            tag = id;
-
-            i = line.IndexOf("value=");
-            newstring = line.Substring(i + 6);
-            i = newstring.Length;
-            id = newstring.Substring(0, i);
+            //i = line.IndexOf("tag=");
+            //newstring = line.Substring(i + 4);
+            //i = newstring.IndexOf(" ");
+            //id = newstring.Substring(0, i);
+            //tag = id;
+            tag = match.Groups[2].Value.TrimEnd();
+            //i = line.IndexOf("value=");
+            //newstring = line.Substring(i + 6);
+            //i = newstring.Length;
+            //id = newstring.Substring(0, i);
+            id = match.Groups[3].Value.TrimEnd();
             if( Int32.TryParse(id, out value)==false)
             {
                 //
