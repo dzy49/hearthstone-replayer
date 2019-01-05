@@ -13,5 +13,6 @@ public class card {
     public string type;
     public string card_name;
     internal string nextStep;
+    public int resources;
 }
-public enum Zone { HAND, DECK, SECRET, GRAVEYARD, PLAY, SETASIDE};
+public enum Zone { HAND, DECK, SECRET, GRAVEYARD, PLAY, SETASIDE, REMOVEDFROMGAME};

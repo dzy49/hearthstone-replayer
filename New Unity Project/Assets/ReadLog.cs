@@ -19,6 +19,8 @@ public class ReadLog
     public Dictionary<string, Texture> textureMap = new Dictionary<string, Texture>();
 
     public ArrayList imagelist = new ArrayList();
+    public ArrayList manap1 = new ArrayList();
+    public ArrayList manap2 = new ArrayList();
     public int count, debug1=0, debug2=0;
     public string[] strs;
     public string test;
@@ -314,7 +316,7 @@ public class ReadLog
             Regex reg = new Regex("Entity=(.+)tag=(.+)value=(.+)");
             Match match = reg.Match(line);
             id = match.Groups[1].Value.TrimEnd();
-
+            String name = id;
             if (Int32.TryParse(id, out idnum))
             {
                 currCard = entity[idnum];
@@ -462,6 +464,50 @@ public class ReadLog
             if (tag.Equals("NEXT_STEP"))
             {
                 currCard.nextStep = id;
+            }
+            if (tag.Equals("RESOURCES"))
+            {
+                if(name== entity[2].card_name)
+                {
+                    if (Int32.Parse(id) > manap1.Count)
+                    {
+                        currCard.resources = Int32.Parse(id);
+                        UnityEngine.Object obj = Resources.Load("crystal");
+                        GameObject instancedObj = GameObject.Instantiate(obj) as GameObject;
+                        Material[] m = new Material[1];
+                        UnityEngine.Object obj2 = Resources.Load("crystal_material");
+                        //Material myNewMaterial = new Material(Shader.Find("Standard"));
+                        m[0] = (Material)obj2;
+                        instancedObj.GetComponent<Renderer>().materials = m;
+                        instancedObj.name = "1r" + id;
+                        manap1.Add(instancedObj);
+                    }else if (Int32.Parse(id) < manap1.Count)
+                    {
+
+                    }
+                }else if (name == entity[3].card_name)
+                {
+                    if (Int32.Parse(id) > manap2.Count)
+                    {
+                        currCard.resources = Int32.Parse(id);
+                        UnityEngine.Object obj = Resources.Load("crystal");
+                        GameObject instancedObj = GameObject.Instantiate(obj) as GameObject;
+                        Material[] m = new Material[1];
+                        UnityEngine.Object obj2 = Resources.Load("crystal_material");
+                        //Material myNewMaterial = new Material(Shader.Find("Standard"));
+                        m[0] = (Material)obj2;
+                        instancedObj.GetComponent<Renderer>().materials = m;
+                        instancedObj.name = "2r" + id;
+                        manap2.Add(instancedObj);
+                    }
+                    else if (Int32.Parse(id) < manap2.Count)
+                    {
+
+                    }
+                }
+               
+                
+
             }
             if (tag.Equals("STEP"))
             {
