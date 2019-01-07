@@ -35,7 +35,7 @@ public class ReadLog
     {
 
         string newstring =null;
-        strs = File.ReadAllLines(@"C:\Users\rongday\Downloads\Power.log.txt");
+        strs = File.ReadAllLines(@"C:\Blizzard Game\Hearthstone\Logs\Power.log");
         int i, j = 0, length = strs.Length;
         count = 0;
         card a = new card();
@@ -152,11 +152,46 @@ public class ReadLog
                     if (tag.Equals("ZONE"))
                     {
                         newCard.zone = (Zone)Enum.Parse(typeof(Zone), newstring);
-                        
+                        if (newCard.zone == Zone.DECK)
+                        {
+                            UnityEngine.Object obj = Resources.Load("card2");
+                            GameObject instancedObj = GameObject.Instantiate(obj) as GameObject;
+                            Material[] m = new Material[2];
+                            UnityEngine.Object obj2 = Resources.Load("back");
+                            Material myNewMaterial = new Material(Shader.Find("Standard"));
+                            if (newCard.cardID != null && textureMap[newCard.cardID] != null)
+                            {
+                                myNewMaterial.mainTexture = textureMap[newCard.cardID];
+                            }
+                            else
+                            {
+
+                            }
+                            //myNewMaterial.SetFloat("_Mode", 1f);
+                            SetMaterialRenderingMode(myNewMaterial, RenderingMode.Cutout);
+                            m[1] = myNewMaterial;
+                            m[0] = (Material)obj2;
+                            instancedObj.GetComponent<Renderer>().materials = m;
+                            instancedObj.name = "c" + newCard.cardGameID.ToString();
+                        }
+
                     }
                     if (line.Contains("CONTROLLER"))
                     {
                         newCard.player = Int32.Parse(newstring);
+                        if (newCard.player == 1&&newCard.zone==Zone.DECK)
+                        {
+                            GameObject.Find("c" + newCard.cardGameID.ToString()).GetComponent<Transform>().position = new Vector3(-40, 0, 1);
+                            GameObject.Find("c" + newCard.cardGameID.ToString()).GetComponent<Transform>().Rotate(0,0,90);
+
+                        }
+                        else if((newCard.player == 2 && newCard.zone == Zone.DECK))
+                        {
+                            GameObject.Find("c" + newCard.cardGameID.ToString()).GetComponent<Transform>().position = new Vector3(-40, 0, 20);
+                            GameObject.Find("c" + newCard.cardGameID.ToString()).GetComponent<Transform>().Rotate(0,0,90);
+
+                        }
+
                     }
                     if (line.Contains("ENTITY_ID"))
                     {
@@ -195,6 +230,7 @@ public class ReadLog
                             NewObj.SetActive(true);
                             
                         }
+                        
                     }
 
                     if (j + 1 >= strs.Length)
@@ -381,8 +417,8 @@ public class ReadLog
                     NewObj.name = currCard.cardGameID.ToString();
                     NewImage=NewObj.GetComponent<Image>();
 
-                    UnityEngine.Object obj = Resources.Load("card2");
-                    GameObject instancedObj = GameObject.Instantiate(obj) as GameObject;
+                    //UnityEngine.Object obj = Resources.Load("card2");
+                    //GameObject instancedObj = GameObject.Instantiate(obj) as GameObject;
                     Material[] m = new Material[2];
                     UnityEngine.Object obj2 = Resources.Load("back");
                     Material myNewMaterial = new Material(Shader.Find("Standard"));
@@ -398,6 +434,8 @@ public class ReadLog
                     SetMaterialRenderingMode(myNewMaterial, RenderingMode.Cutout);
                     m[1] = myNewMaterial;
                     m[0] = (Material)obj2;
+                    GameObject instancedObj = GameObject.Find("c" + currCard.cardGameID.ToString());
+
                     instancedObj.GetComponent<Renderer>().materials = m;
                     instancedObj.name = "c"+currCard.cardGameID.ToString();
 
