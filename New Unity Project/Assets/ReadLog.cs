@@ -11,7 +11,7 @@ public class ReadLog
 {
     public Transform Brick;
 
-    public string line,name1,name2;
+    public string line, name1, name2;
     public ArrayList hand = new ArrayList();
     public ArrayList playzone = new ArrayList();
     public Dictionary<int, card> entity = new Dictionary<int, card>();
@@ -21,10 +21,10 @@ public class ReadLog
     public ArrayList imagelist = new ArrayList();
     public ArrayList manap1 = new ArrayList();
     public ArrayList manap2 = new ArrayList();
-    public int count, debug1=0, debug2=0;
+    public int count, debug1 = 0, debug2 = 0;
     public string[] strs;
     public string test;
-    public ArrayList choicesList=new ArrayList();
+    public ArrayList choicesList = new ArrayList();
     public string debugstring;
     private Sprite defaultImage;
     private Texture2D defaultText;
@@ -34,14 +34,14 @@ public class ReadLog
     public ReadLog()
     {
 
-        string newstring =null;
+        string newstring = null;
         strs = File.ReadAllLines(@"C:\Blizzard Game\Hearthstone\Logs\Power.log");
         int i, j = 0, length = strs.Length;
         count = 0;
         card a = new card();
         card b = new card();
         card c = new card();
-        int idnum=-1;
+        int idnum = -1;
         entity.Add(1, a);
         entity.Add(2, b);
         entity.Add(3, c);
@@ -72,13 +72,13 @@ public class ReadLog
                     }
                     else
                     {
-                        
+
                         mono.GetComponent<MonoStub>().StartCoroutine(LoadAll(newstring));
-                       
+
                     }
                 }
             }
-           
+
         }
         //card=(GameObject)Resources.Load("card");
         //card.transform.position = new Vector3(0, 0, 0);
@@ -92,7 +92,7 @@ public class ReadLog
         line = strs[j];
         //card ca = new card(strs[j]);
         //hand.Add(ca);
-        if(entity[1].step== "BEGIN_MULLIGAN")
+        if (entity[1].step == "BEGIN_MULLIGAN")
         {
             //
         }
@@ -102,8 +102,8 @@ public class ReadLog
         }
         if (strs[j].Contains("Creating ID") == true)
         {
-           
-            string newstring,tagnew;
+
+            string newstring, tagnew;
             string id;
             int idnum;
             int i = 0;
@@ -179,16 +179,16 @@ public class ReadLog
                     if (line.Contains("CONTROLLER"))
                     {
                         newCard.player = Int32.Parse(newstring);
-                        if (newCard.player == 1&&newCard.zone==Zone.DECK)
+                        if (newCard.player == 1 && newCard.zone == Zone.DECK)
                         {
-                            GameObject.Find("c" + newCard.cardGameID.ToString()).GetComponent<Transform>().position = new Vector3(-40, 0, 1);
-                            GameObject.Find("c" + newCard.cardGameID.ToString()).GetComponent<Transform>().Rotate(0,0,90);
+                            GameObject.Find("c" + newCard.cardGameID.ToString()).GetComponent<Transform>().position = new Vector3(-70, 0, -13);
+                            GameObject.Find("c" + newCard.cardGameID.ToString()).GetComponent<Transform>().Rotate(0, 0, 90);
 
                         }
-                        else if((newCard.player == 2 && newCard.zone == Zone.DECK))
+                        else if ((newCard.player == 2 && newCard.zone == Zone.DECK))
                         {
-                            GameObject.Find("c" + newCard.cardGameID.ToString()).GetComponent<Transform>().position = new Vector3(-40, 0, 20);
-                            GameObject.Find("c" + newCard.cardGameID.ToString()).GetComponent<Transform>().Rotate(0,0,90);
+                            GameObject.Find("c" + newCard.cardGameID.ToString()).GetComponent<Transform>().position = new Vector3(-70, 0, 13);
+                            GameObject.Find("c" + newCard.cardGameID.ToString()).GetComponent<Transform>().Rotate(0, 0, 90);
 
                         }
 
@@ -211,26 +211,27 @@ public class ReadLog
                             NewObj.GetComponent<RectTransform>().SetParent(GameObject.Find("Canvas").transform);
                             NewObj.name = newCard.cardGameID.ToString();
                             NewImage = NewObj.GetComponent<Image>();
-                            if (newCard.cardID!=null&&imageMap[newCard.cardID] != null)
+                            if (newCard.cardID != null && imageMap[newCard.cardID] != null)
                             {
                                 NewImage.sprite = imageMap[newCard.cardID];
                             }
-                            
+
                             if (newCard.player == 1)
                             {
-                                NewObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-400 + newCard.zPosition * 50,-400);
-                               
+                                NewObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-500 + newCard.zPosition * 50, -400);
+
 
                             }
                             else
                             {
-                                NewObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-400 + newCard.zPosition * 50, -500);
+                                NewObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-500 + newCard.zPosition * 50, -500);
                             }
                             //new GameObject().AddComponent<MonoStub>().StartCoroutine(Load(newCard.cardGameID, NewImage));
                             NewObj.SetActive(true);
-                            
+                            createCard(newCard);
+                            GameObject.Find("c" + newCard.cardGameID.ToString()).GetComponent<Transform>().position = new Vector3(-30 + newCard.zPosition * 20, 20, -50);
                         }
-                        
+
                     }
 
                     if (j + 1 >= strs.Length)
@@ -247,8 +248,8 @@ public class ReadLog
         else if (strs[j].Contains("SHOW_ENTITY - Updating Entity") == true)
         {
             string newstring;
-            string id,id2;
-            int idnum,idnum2;
+            string id, id2;
+            int idnum, idnum2;
             int i = 0;
             card currCard;
 
@@ -294,7 +295,7 @@ public class ReadLog
             id = newstring.Substring(0, i);
             currCard.cardID = id;
             line = strs[++j];
-         
+
             while (IsSubLine(line))
             {
                 count++;
@@ -370,13 +371,14 @@ public class ReadLog
                 else if (id.Equals(entity[3].card_name))
                 {
                     currCard = entity[3];
-                }else
+                }
+                else
                 {
                     int result, idnum2;
                     Regex reg2 = new Regex(@"(?<=id=)[0-9\.]*");
                     Match match2 = reg2.Match(strs[j]);
                     string id2 = match2.Groups[0].Value;
-                    
+
                     if (Int32.TryParse(id2, out result))
                     {
                         idnum2 = result;
@@ -403,7 +405,7 @@ public class ReadLog
             //i = newstring.Length;
             //id = newstring.Substring(0, i);
             id = match.Groups[3].Value.TrimEnd();
-            if( Int32.TryParse(id, out value)==false)
+            if (Int32.TryParse(id, out value) == false)
             {
                 //
             }
@@ -415,7 +417,7 @@ public class ReadLog
                     Image NewImage = NewObj.AddComponent<Image>(); //Add the Image Component script
                     NewObj.GetComponent<RectTransform>().SetParent(GameObject.Find("Canvas").transform);
                     NewObj.name = currCard.cardGameID.ToString();
-                    NewImage=NewObj.GetComponent<Image>();
+                    NewImage = NewObj.GetComponent<Image>();
 
                     //UnityEngine.Object obj = Resources.Load("card2");
                     //GameObject instancedObj = GameObject.Instantiate(obj) as GameObject;
@@ -428,7 +430,7 @@ public class ReadLog
                     }
                     else
                     {
-                       
+
                     }
                     //myNewMaterial.SetFloat("_Mode", 1f);
                     SetMaterialRenderingMode(myNewMaterial, RenderingMode.Cutout);
@@ -437,12 +439,13 @@ public class ReadLog
                     GameObject instancedObj = GameObject.Find("c" + currCard.cardGameID.ToString());
 
                     instancedObj.GetComponent<Renderer>().materials = m;
-                    instancedObj.name = "c"+currCard.cardGameID.ToString();
+                    instancedObj.name = "c" + currCard.cardGameID.ToString();
 
-                    if (currCard.cardID!=null&&imageMap[currCard.cardID]!=null)
+                    if (currCard.cardID != null && imageMap[currCard.cardID] != null)
                     {
                         NewImage.sprite = imageMap[currCard.cardID];
-                    }else
+                    }
+                    else
                     {
                         NewImage.sprite = defaultImage;
                     }
@@ -450,18 +453,21 @@ public class ReadLog
                     if (currCard.player == 1)
                     {
                         NewObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-500 + value * 50, -400);
-                        instancedObj.GetComponent<Transform>().position = new Vector3( 100+value * 20, 20,-50);
+                        instancedObj.GetComponent<Transform>().position = new Vector3(-30 + value * 20, 20, -50);
+                        instancedObj.GetComponent<Transform>().Rotate(0, 0, -90);
+
                     }
                     else
                     {
                         NewObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(-500 + value * 50, -500);
-                        instancedObj.GetComponent<Transform>().position = new Vector3(100+value * 20,   20,40);
-                        instancedObj.GetComponent<Transform>().Rotate(Vector3.right*180);
+                        instancedObj.GetComponent<Transform>().position = new Vector3(-30 + value * 20, 20, 40);
+                        instancedObj.GetComponent<Transform>().Rotate(0, 0, 90);
 
                     }
                     //new GameObject().AddComponent<MonoStub>().StartCoroutine(Load(currCard.cardGameID, NewImage));
                     NewObj.SetActive(true);
-                }else if(currCard.zone == Zone.HAND)
+                }
+                else if (currCard.zone == Zone.HAND)
                 {
                     //float x = GameObject.Find(currCard.cardGameID.ToString()).GetComponent<RectTransform>().anchoredPosition.x;
                     //float y = GameObject.Find(currCard.cardGameID.ToString()).GetComponent<RectTransform>().anchoredPosition.y;
@@ -482,13 +488,18 @@ public class ReadLog
                     {
                         if (currCard.player == 1)
                         {
-                            GameObject.Find("c"+currCard.cardGameID.ToString()).GetComponent<Transform>().position = new Vector3(100 + value * 20, 20, -50);
+                            GameObject.Find("c" + currCard.cardGameID.ToString()).GetComponent<Transform>().position = new Vector3(-30 + value * 20, 20, -50);
+                            //GameObject.Find("c" + currCard.cardGameID.ToString()).GetComponent<Transform>().Rotate(0, 0, -90);
+
                             GameObject.Find(currCard.cardGameID.ToString()).GetComponent<RectTransform>().anchoredPosition = new Vector2(-500 + value * 50, -400);
+
                         }
                         else
                         {
-                            GameObject.Find("c"+currCard.cardGameID.ToString()).GetComponent<Transform>().position = new Vector3(100 + value * 20, 20, 40);
-                            GameObject.Find( currCard.cardGameID.ToString()).GetComponent<RectTransform>().anchoredPosition = new Vector2(-500 + value * 50, -500);
+                            GameObject.Find("c" + currCard.cardGameID.ToString()).GetComponent<Transform>().position = new Vector3(-30 + value * 20, 20, 40);
+                            //GameObject.Find("c" + currCard.cardGameID.ToString()).GetComponent<Transform>().Rotate(0, 0, 90);
+
+                            GameObject.Find(currCard.cardGameID.ToString()).GetComponent<RectTransform>().anchoredPosition = new Vector2(-500 + value * 50, -500);
 
 
                         }
@@ -496,7 +507,8 @@ public class ReadLog
                 }
                 currCard.zPosition = value;
             }
-            if (tag.Equals("ZONE")) {
+            if (tag.Equals("ZONE"))
+            {
                 currCard.zone = (Zone)Enum.Parse(typeof(Zone), id);
             }
             if (tag.Equals("NEXT_STEP"))
@@ -505,7 +517,7 @@ public class ReadLog
             }
             if (tag.Equals("RESOURCES"))
             {
-                if(name== entity[2].card_name)
+                if (name == entity[2].card_name)
                 {
                     if (Int32.Parse(id) > manap1.Count)
                     {
@@ -519,11 +531,13 @@ public class ReadLog
                         instancedObj.GetComponent<Renderer>().materials = m;
                         instancedObj.name = "1r" + id;
                         manap1.Add(instancedObj);
-                    }else if (Int32.Parse(id) < manap1.Count)
+                    }
+                    else if (Int32.Parse(id) < manap1.Count)
                     {
 
                     }
-                }else if (name == entity[3].card_name)
+                }
+                else if (name == entity[3].card_name)
                 {
                     if (Int32.Parse(id) > manap2.Count)
                     {
@@ -543,8 +557,8 @@ public class ReadLog
 
                     }
                 }
-               
-                
+
+
 
             }
             if (tag.Equals("STEP"))
@@ -557,13 +571,13 @@ public class ReadLog
                 if (id.Contains("INPUT"))
                 {
                     //debug1 = -1;
-                    if (currCard == entity[2]|| currCard == entity[3])
+                    if (currCard == entity[2] || currCard == entity[3])
                     {
                         //debug2 = -1;
                         j++;
                         //debug1 = j;
                         //debugstring = strs[j];
-                        j=ChoiceList(j);
+                        j = ChoiceList(j);
                         return j;
                     }
                 }
@@ -580,7 +594,7 @@ public class ReadLog
         else if (line.Contains("PlayerID=1, PlayerName="))
         {
             //Regex reg = new Regex("PlayerName=(.+)$");
-         
+
             //Match match = reg.Match(line);
             //string playerName = match.Groups[1].Value;
             string playerName;
@@ -618,8 +632,9 @@ public class ReadLog
 
     IEnumerator Load(int id, Image image)
     {
-        string url=null;
-        if (entity[id].cardID == null) {
+        string url = null;
+        if (entity[id].cardID == null)
+        {
             url = @"C:\Users\Public\TestFolder\back.png";
         }
         else
@@ -638,9 +653,9 @@ public class ReadLog
     }
     IEnumerator LoadDefault()
     {
-       
+
         string url = @"C:\Users\Public\TestFolder\back.png";
-       
+
         WWW www = new WWW(url);
         yield return www;
 
@@ -669,7 +684,7 @@ public class ReadLog
             imageMap.Add(id, sprite);
             textureMap.Add(id, texture);
         }
-        
+
     }
 
     public Boolean IsSubLine(string line)
@@ -678,7 +693,7 @@ public class ReadLog
         string newstring;
         start = line.IndexOf("-");
         newstring = line.Substring(start + "-".Length);
-        newstring=newstring.TrimStart();
+        newstring = newstring.TrimStart();
         test = newstring;
         return newstring.StartsWith("tag=");
 
@@ -692,13 +707,13 @@ public class ReadLog
         while (strs[j].Contains("GameState.DebugPrintEntityChoices()"))
         {
             Regex reg = new Regex(@"(?<=id=)[0-9\.]*");
-        Match match = reg.Match(strs[j]);
-        string id = match.Groups[0].Value;
-        int idnum = Int32.Parse(id);
-        int[] currChocie = new int[5];
-        choicesList.Add(currChocie);
-        j++;
-        
+            Match match = reg.Match(strs[j]);
+            string id = match.Groups[0].Value;
+            int idnum = Int32.Parse(id);
+            int[] currChocie = new int[5];
+            choicesList.Add(currChocie);
+            j++;
+
             if (strs[j].Contains("Entities"))
             {
                 debug1++;
@@ -706,7 +721,7 @@ public class ReadLog
                 Match match2 = reg.Match(strs[j]);
                 string id2 = match2.Groups[0].Value;
                 int idnum2 = Int32.Parse(id2);
-                currChocie[i]=idnum2;
+                currChocie[i] = idnum2;
                 i++;
             }
             if (j + 1 >= strs.Length)
@@ -730,6 +745,28 @@ public class ReadLog
         Transparent,
     }
 
+    public void createCard(card newCard)
+    {
+        UnityEngine.Object obj = Resources.Load("card2");
+        GameObject instancedObj = GameObject.Instantiate(obj) as GameObject;
+        Material[] m = new Material[2];
+        UnityEngine.Object obj2 = Resources.Load("back");
+        Material myNewMaterial = new Material(Shader.Find("Standard"));
+        if (newCard.cardID != null && textureMap[newCard.cardID] != null)
+        {
+            myNewMaterial.mainTexture = textureMap[newCard.cardID];
+        }
+        else
+        {
+
+        }
+        //myNewMaterial.SetFloat("_Mode", 1f);
+        SetMaterialRenderingMode(myNewMaterial, RenderingMode.Cutout);
+        m[1] = myNewMaterial;
+        m[0] = (Material)obj2;
+        instancedObj.GetComponent<Renderer>().materials = m;
+        instancedObj.name = "c" + newCard.cardGameID.ToString();
+    }
     public static void SetMaterialRenderingMode(Material material, RenderingMode renderingMode)
     {
         switch (renderingMode)
